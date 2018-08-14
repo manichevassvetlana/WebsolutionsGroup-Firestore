@@ -1,0 +1,13 @@
+{
+    "name": "websolutions/firestore",
+    "description": "The Firestore extension for Laravel.",
+    "keywords": ["firestore", "laravel"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": "^7.1.0",
+        "google/cloud": "^0.72.0",
+        "google/protobuf": "^v3.3.0",
+        "grpc/grpc": "^v1.1.0"
+    }
+}
