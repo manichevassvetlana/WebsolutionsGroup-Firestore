@@ -76,9 +76,21 @@ trait SnapshotTrait
         $document = $this->transformSnapshotTimestamps($document);
 
         $class = "App\class_name";
-        $class = str_replace ('class_name', $reference->getCollectionName(), $class);
+        $collection = $reference->getCollectionName();
+        $class = str_replace ('class_name', $this->getClassName($collection), $class);
 
         return !class_exists($class) ? new DocumentSnapshot($reference, $valueMapper, $document, $fields, $exists) : new $class($reference, $valueMapper, $document, $fields, $exists);
+    }
+
+    private function getClassName($collection)
+    {
+        $collection = explode('_', $collection);
+        $class = '';
+        foreach ($collection as $part){
+            $class .= ucfirst($part);
+        }
+
+        return$class;
     }
 
     /**
