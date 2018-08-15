@@ -365,7 +365,7 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
     {
         if (!$this->exists) return null;
         $collection = new $collection();
-        return is_null($relationField) ? $collection->find($this->$tableField) : $collection->where($relationField, $this->$tableField)->get()->first();
+        return is_null($relationField) ? $collection->find($this->$tableField) : $collection->where($relationField, $this->$tableField)->first();
     }
 
     public function morphMany($collection, $referenceField)
