@@ -476,9 +476,10 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
 
     public static function find($id)
     {
+        if(!$id) return null;
         $class = get_called_class();
         $doc = (new $class())->document($id);
-        if($doc->exists()) return $doc; else return null;
+        return $doc->exists() ? $doc :  null;
     }
 
     public static function all()
