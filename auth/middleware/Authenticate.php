@@ -54,14 +54,6 @@ class Authenticate
     protected function authenticate(array $guards)
     {
         session_start();
-        if (!$this->isAuthenticated()) throw new AuthenticationException('Unauthenticated.', $guards);
-    }
-
-    public static function isAuthenticated()
-    {
-        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-            return true;
-
-        } else return false;
+        if (!\WebsolutionsGroup\Auth\Auth::check()) throw new AuthenticationException('Unauthenticated.', $guards);
     }
 }

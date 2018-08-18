@@ -3,7 +3,7 @@
 namespace WebsolutionsGroup\Auth\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use WebsolutionsGroup\Auth\Auth;
 
 class RedirectIfAuthenticated
 {
@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Authenticate::isAuthenticated()) {
+        if (!Auth::guest()) {
             return redirect('/home');
         }
 
