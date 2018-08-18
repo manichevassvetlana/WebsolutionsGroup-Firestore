@@ -11,7 +11,9 @@
     },
     "autoload": {
         "psr-4": {
-            "WebsolutionsGroup\\Firestore\\": "src"
+            "WebsolutionsGroup\\Firestore\\": "database",
+            "WebsolutionsGroup\\Auth\\": "auth",
+            "WebsolutionsGroup\\Auth\\Middleware\\": "auth/middleware"
         }
     }
 }
