@@ -550,6 +550,10 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         return $this->collection->document($id)->snapshot();
     }
 
+    public function __get($field) {
+        return null;
+    }
+
     /*End private functions*/
 
 }
