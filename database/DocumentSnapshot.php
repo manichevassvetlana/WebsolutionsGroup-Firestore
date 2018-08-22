@@ -445,15 +445,24 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         }
     }
 
-    public function update(array $settable)
+    public function update(array $settable, $objectUpdate = false)
     {
         if (is_null($this->reference)) return null;
         $fillable = [];
         foreach ($this->fillable as $field) {
             if (array_key_exists($field, $settable)) $fillable[$field] = $settable[$field];
         }
-        $doc = $this->reference->set($fillable, ['merge' => true]);
+        $doc = !$objectUpdate ? $this->reference->set($fillable, ['merge' => true]) : $this->updateWithPath($this->reference, $settable);
         return $doc;
+    }
+
+    private function updateWithPath($doc, $updates)
+    {
+        $fill = [];
+        foreach ($updates as $key => $update){
+            array_push($fill, ['path' => $update, 'value' => $update]);
+        }
+        return $doc->update($fill);
     }
 
     public function delete()
@@ -550,7 +559,8 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         return $this->collection->document($id)->snapshot();
     }
 
-    public function __get($field) {
+    public function __get($field)
+    {
         return null;
     }
 
