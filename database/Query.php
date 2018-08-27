@@ -182,7 +182,7 @@ class Query extends \Google\Cloud\Firestore\Query
 
     public function get()
     {
-        return collect($this->documents());
+        return $this->documents()->isEmpty() ? collect([]) : collect($this->documents());
     }
 
     /**
@@ -323,7 +323,7 @@ class Query extends \Google\Cloud\Firestore\Query
 
     public function exists()
     {
-        return collect($this->limit(1)->documents())->count() > 0 ? true : false;
+        return !$this->limit(1)->documents()->isEmpty() ? true : false;
     }
 
     /**
@@ -397,11 +397,12 @@ class Query extends \Google\Cloud\Firestore\Query
 
     public function paginate($number, $orderBy = 'name', $startAt = null)
     {
-        return is_null($startAt) ? collect($this->limit($number)->documents()) : collect($this->orderBy($orderBy)->startAt([$startAt])->limit($number)->documents());
+        return is_null($startAt) ? collect($this->limit($number)->documents()->isEmpty() ? [] : $this->limit($number)->documents()) : collect($this->orderBy($orderBy)->startAt([$startAt])->limit($number)->documents()->isEmpty() ? [] : $this->orderBy($orderBy)->startAt([$startAt])->limit($number)->documents());
     }
 
     public function first()
     {
+        if($this->limit(1)->documents()->isEmpty()) return null;
         $doc = collect($this->limit(1)->documents());
         return $doc->count() > 0 ? $doc[0] : null;
     }

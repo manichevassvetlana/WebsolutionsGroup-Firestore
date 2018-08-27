@@ -480,7 +480,7 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
     {
         $class = get_called_class();
         $class = new $class();
-        return is_null($startAt) ? collect($class->collection->limit($count)->documents()) : collect($class->collection->orderBy($class->searchField)->startAt([$startAt])->limit($count)->documents());
+        return is_null($startAt) ? collect($class->collection->limit($count)->documents()->isEmpty() ? [] : $class->collection->limit($count)->documents()) : collect($class->collection->orderBy($class->searchField)->startAt([$startAt])->limit($count)->documents()->isEmpty() ?  [] : $class->collection->orderBy($class->searchField)->startAt([$startAt])->limit($count)->documents());
     }
 
     public static function where($field, $operator, $value = null)
@@ -520,13 +520,15 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
     {
         $class = get_called_class();
         $class = new $class();
-        return collect($class->collection->documents());
+        $docs = $class->collection->documents();
+        return $docs->isEmpty() ? collect([]) : collect($class->collection->documents());
     }
 
     public static function first()
     {
         $class = get_called_class();
         $class = new $class();
+        if($class->collection->limit(1)->documents()->isEmpty()) return null;
         $doc = collect($class->collection->limit(1)->documents());
         return $doc->count() > 0 ? $doc[0] : null;
     }
