@@ -451,8 +451,9 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         }
     }
 
-    public function update(array $settable)
+    public function update(array $settable, $isMerge = true)
     {
+        if(!$isMerge) return $this->updateFields($settable);
         if (is_null($this->reference)) return null;
         $fillable = [];
         foreach ($this->fillable as $key => $field) {
@@ -467,6 +468,15 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         }
         $doc = $this->reference->set($fillable, ['merge' => true]);
         return $doc;
+    }
+
+    private function updateFields(array $settable)
+    {
+        $fill = [];
+        foreach ($settable as $k => $set){
+            array_push($fill, ['path' => $k, 'value' => $set]);
+        }
+        return $this->reference->update($fill);
     }
 
     public function delete()
@@ -494,7 +504,7 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
         return $class->collection->where($field, $operator, $value);
     }
 
-    public static function orderBy($field, $operator)
+    public static function orderBy($field, $operator = 'ASC')
     {
         $class = get_called_class();
         $class = new $class();
@@ -568,6 +578,11 @@ class DocumentSnapshot extends \Google\Cloud\Firestore\DocumentSnapshot implemen
     public function __get($field)
     {
         return null;
+    }
+
+    public function __call($name, $arguments)
+    {
+
     }
 
     /*End private functions*/
