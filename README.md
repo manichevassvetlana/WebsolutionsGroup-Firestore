@@ -12,8 +12,10 @@ GOOGLE_APPLICATION_CREDENTIALS = "GCFSCredentials.json"</br>
 To create a new Firestore project follow this quide: https://firebase.google.com/docs/firestore/quickstart
 
 You will also need to add Firebase credentials to your app.</br>
+
 Add Firebase API key to your .env file:</br>
 FIREBASE_API_KEY=<i>YOUR_API_KEY</i></br>
+
 Add Firebase credentials to your resource/assests/js/app.js file:</br>
 let config = {</br>
     apiKey: "<API_KEY>",</br>
